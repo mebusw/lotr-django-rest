@@ -1,0 +1,12 @@
+<b>
+Polls
+<b>
+<br />
+let's <a href="/admin">admin </a>
+{% for poll in polls %}
+<hr>
+<p>{{poll.title}}</P>
+<p>{{poll.body}}</P>
+<p>{{poll.timestamp}}</P>
+<p>{{poll.like}}</P>
+{% endfor %}
