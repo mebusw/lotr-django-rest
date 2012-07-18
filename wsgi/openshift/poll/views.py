@@ -1,10 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-  
 import os
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
-from poll.models import Poll, Choice
+from poll.models import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
+from djangorestframework.views import View 
     
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -37,3 +39,20 @@ def vote(request, poll_id):
 def results(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('results.html', {'poll': p})
+
+ 
+
+class RESTforAPoll(View):  
+    def get(self, request, *args, **kwargs):  
+        return 'get %s' % kwargs['id']
+    def delete(self, request, *args, **kwargs):  
+        return 'delete %s' % args['id']
+    def put(self, request, *args, **kwargs):  
+        return 'put %s' % args['id']
+
+class RESTforPolls(View):  
+    def get(self, request, *args, **kwargs):  
+        return 'get all'
+    def post(self, request, *args, **kwargs):  
+        return 'post new'
+

@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 #from poll.models import Poll, Choice
 from poll.resources import *
+from poll.views import *
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 
 # Uncomment the next two lines to enable the admin:
@@ -26,5 +27,13 @@ urlpatterns = patterns('',
     url(r'^polls/(?P<poll_id>\d+)/$', 'openshift.poll.views.detail'),
     url(r'^polls/(?P<poll_id>\d+)/results/$', 'openshift.poll.views.results'),
     url(r'^polls/(?P<poll_id>\d+)/vote/$', 'openshift.poll.views.vote'),   
-    url(r'^api/choice/', ListOrCreateModelView.as_view(resource=LineItemResource)),
+    
+    # built-in view/handler
+    url(r'^api/choice/(?P<id>[^/]+)', InstanceModelView.as_view(resource=ChoiceItemResource)),
+    url(r'^api/choice/', ListOrCreateModelView.as_view(resource=ChoiceItemResource)),
+                       
+    # customed view/handler
+    url(r'^api/poll/(?P<id>[^/]+)', RESTforAPoll.as_view(resource=PollItemResource)),
+    url(r'^api/poll/', ListOrCreateModelView.as_view(resource=PollItemResource)),
 )
+
