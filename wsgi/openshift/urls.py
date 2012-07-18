@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import patterns, include, url
-
+#from poll.models import Poll, Choice
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,6 +18,9 @@ urlpatterns = patterns('',
     
     #########
     url(r'^about/', 'openshift.views.about', name='about'),
-    url(r'^poll/', 'openshift.poll.views.list_polls', name='poll'),
-   
+    
+    url(r'^polls/$', 'openshift.poll.views.index'),
+    url(r'^polls/(?P<poll_id>\d+)/$', 'openshift.poll.views.detail'),
+    url(r'^polls/(?P<poll_id>\d+)/results/$', 'openshift.poll.views.results'),
+    url(r'^polls/(?P<poll_id>\d+)/vote/$', 'openshift.poll.views.vote'),   
 )
