@@ -53,8 +53,8 @@ class PollAdmin(admin.ModelAdmin):
     ]
     inlines = [ChoiceInline]
 
-admin.site.register(Poll, PollAdmin)
-admin.site.register(Choice)
+#admin.site.register(Poll, PollAdmin)
+#admin.site.register(Choice)
 
 
 class PackageInline(admin.TabularInline):
@@ -64,7 +64,7 @@ class PackageInline(admin.TabularInline):
 class CycleAdmin(admin.ModelAdmin):
     inlines = [PackageInline]
 
-admin.site.register(Package)
-admin.site.register(Cycle, CycleAdmin)
-admin.site.register(Scenario)
-admin.site.register(Session)
+#admin.site.register(Package)
+#admin.site.register(Cycle, CycleAdmin)
+#admin.site.register(Scenario)
+#admin.site.register(Session)
