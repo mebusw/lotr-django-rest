@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import patterns, include, url
-#from poll.models import Poll, Choice
 from poll.resources import *
 from poll.views import *
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView

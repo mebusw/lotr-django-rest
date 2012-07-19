@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse  
+﻿from django.core.urlresolvers import reverse  
 from djangorestframework.views import View  
 from djangorestframework.resources import ModelResource  
 from models import *  
