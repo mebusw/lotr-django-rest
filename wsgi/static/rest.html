@@ -1,0 +1,82 @@
+<html>
+    
+<script src='jquery-1.7.2.min.js'></script>
+<script>
+    var mapping = {
+        index: ['/tournaments/', 'GET', '{"page":99}'],
+        publish: ['/tournaments/66', 'POST', '{"name":"Jacky"}'],
+        update: ['/tournaments/22/participants/33', 'PUT', '{"name":"Jacky"}'],
+
+    };
+    
+    $(document).ready(function(){
+        console.log($("#send").text());
+        
+        $("#send").click(function() {
+            console.log($.parseJSON($('#data').val()));
+            $.ajax({
+               url: $('#url').val(),
+               type: $("input[type='radio'][name='type']:checked").val(),
+               data: $.parseJSON($('#data').val()),
+               success: function(response) {
+                    $('#response').append(response);
+               }
+            });       
+        });
+        
+        $("#preset").change(function() {
+            var preset = $("#preset").val();
+            console.log(preset);
+            console.log(mapping[preset]);
+            $('#url').val(mapping[preset][0]);
+            $("input[type='radio'][name='type'][value='" + mapping[preset][1] + "']").attr("checked", "checked");
+            $('#data').val(mapping[preset][2]);
+        });
+    });
+
+    $.ajax({
+           url: '/tournaments/55/participants/66',
+           type: 'put',
+           data: {name: 'icewe'},
+           success: function(response) {
+                $('#result').append(response);
+           }
+           
+    });
+    
+    $.ajax({
+           url: '/tournaments/44',
+           type: 'post',
+           data: {name: 'world cup'},
+           success: function(response) {
+                $('#result').append(response);
+           }
+           
+    });
+    
+</script>
+    
+<body>
+    
+
+<span>Preset URLs</span>
+<select name="preset" id="preset">    
+    <option value="index">('/tournaments', method='GET')</option>    
+    <option value="publish">('/tournaments/66', method='POST')</option>     
+    <option value="update">('/tournaments/22/participants/33', method='PUT')</option>     
+</select>
+<br/>
+<span>URL:</span><input id='url' value='/tournaments/' /><br/>
+<span>Get</span><input name='type' type='radio' value='GET' checked/><br/>
+<span>Post</span><input name='type' type='radio' value='POST'/><br/>
+<span>Put</span><input name='type' type='radio' value='PUT'/><br/>
+<span>Delete</span><input name='type' type='radio' value='DELETE'/><br/>
+<br/>
+<span>Form Data</span><input id='data' value='{}'/><br/>
+<input id='send' type='submit' value='Send'/>
+
+<div id='result'>===</div>
+<hr/>
+<div id='response'>^^^</div>
+</body>
+</html>
