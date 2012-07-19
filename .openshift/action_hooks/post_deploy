@@ -2,3 +2,11 @@
 # This is a simple post deploy hook executed after your application 
 # is deployed and started.  This script gets executed directly, so 
 # it could be python, php, ruby, etc.
+
+### It is important to note that if you want to do anything related to the database, you can't do it in the pre_build or build scripts, because the database isn't available yet. 
+### If you do make the mistake of trying to do something database related in the build script you will see an error like this.
+### "remote: ERROR 2003 (HY000): Can't connect to MySQL server on 'xxx.x.xx.x' (111)"
+
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
+python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput
+

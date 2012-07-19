@@ -19,8 +19,6 @@ source $OPENSHIFT_GEAR_DIR/virtenv/bin/activate
 echo "Backuping $OPENSHIFT_DATA_DIR/sqlite3.db"                                   
 cp $OPENSHIFT_DATA_DIR/sqlite3.db $OPENSHIFT_DATA_DIR/sqlite3.db~
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
-python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py collectstatic --noinput'"
 python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py collectstatic --noinput
