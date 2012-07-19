@@ -7,14 +7,20 @@
 # Activate VirtualEnv in order to use the correct libraries
 source $OPENSHIFT_GEAR_DIR/virtenv/bin/activate
 
-if [ ! -f $OPENSHIFT_DATA_DIR/sqlite3.db ]
-then
-    echo "Copying $OPENSHIFT_REPO_DIR/wsgi/openshift/sqlite3.db to $OPENSHIFT_DATA_DIR"
-    cp $OPENSHIFT_REPO_DIR/wsgi/openshift/sqlite3.db $OPENSHIFT_DATA_DIR/
-else
-    echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
-    python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput
-fi
+#if [ ! -f $OPENSHIFT_DATA_DIR/sqlite3.db ]
+#then
+#    echo "Copying $OPENSHIFT_REPO_DIR/wsgi/openshift/sqlite3.db to $OPENSHIFT_DATA_DIR"
+#    cp $OPENSHIFT_REPO_DIR/wsgi/openshift/sqlite3.db $OPENSHIFT_DATA_DIR/
+#else
+#    echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
+#    python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput
+#fi
+
+echo "Backuping $OPENSHIFT_DATA_DIR/sqlite3.db"                                   
+cp $OPENSHIFT_DATA_DIR/sqlite3.db $OPENSHIFT_DATA_DIR/sqlite3.db~
+
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
+python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py collectstatic --noinput'"
 python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py collectstatic --noinput
