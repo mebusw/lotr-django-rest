@@ -1,10 +1,11 @@
-Django on OpenShift
+Django + Rest framework on OpenShift
 ===================
 
 This git repository helps you get up and running quickly w/ a Django installation
 on OpenShift.  The Django project name used in this repo is 'openshift'
 but you can feel free to change it.  Right now the backend is sqlite3 and the
-database runtime is @ $OPENSHIFT_DATA_DIR/sqlite3.db.
+database runtime is @ $OPENSHIFT_DATA_DIR/sqlite3.db on local, and mysql on
+openshift env.
 
 When you push this application up for the first time, the sqlite database is
 copied from wsgi/openshift/sqlite3.db.  This is the stock database that is created
@@ -35,7 +36,7 @@ Create a python-2.6 application
 Add this upstream repo
 
     cd django
-    git remote add upstream -m master git://github.com/openshift/django-example.git
+    git remote add upstream -m master git@github.com:mebusw/lotr-django-rest.git
     git pull -s recursive -X theirs upstream master
     
 Then push the repo upstream
