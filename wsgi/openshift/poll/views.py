@@ -7,6 +7,7 @@ from poll.models import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from djangorestframework.views import View 
+from django.core.context_processors import csrf
     
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -24,10 +25,11 @@ def vote(request, poll_id):
         selected_choice = p.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the poll voting form.
-        return render_to_response('detail.html', {
-            'poll': p,
-            'error_message': "You didn't select a choice.",
-        })
+        rrr = {}
+        rrr.update(csrf(request))
+        rrr['poll']=p
+        rrr['error_message']="You didn't select a choice."
+        return render_to_response('detail.html', rrr)
     else:
         selected_choice.votes += 1
         selected_choice.save()
