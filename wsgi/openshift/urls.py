@@ -26,10 +26,15 @@ urlpatterns = patterns('',
     url(r'^polls/(?P<poll_id>\d+)/$', 'openshift.poll.views.detail'),
     url(r'^polls/(?P<poll_id>\d+)/results/$', 'openshift.poll.views.results'),
     url(r'^polls/(?P<poll_id>\d+)/vote/$', 'openshift.poll.views.vote'),   
-    
+
+                       
     # built-in view/handler
     url(r'^api/choice/(?P<id>[^/]+)', InstanceModelView.as_view(resource=ChoiceItemResource)),
     url(r'^api/choice/', ListOrCreateModelView.as_view(resource=ChoiceItemResource)),
+    url(r'^api/cycle/(?P<id>[^/]+)', InstanceModelView.as_view(resource=CycleItemResource)),
+    url(r'^api/cycle/', ListOrCreateModelView.as_view(resource=CycleItemResource)),
+    url(r'^api/package/(?P<id>[^/]+)', InstanceModelView.as_view(resource=PackageItemResource)),
+    url(r'^api/package/', ListOrCreateModelView.as_view(resource=PackageItemResource)),
                        
     # customed view/handler
     url(r'^api/poll/(?P<id>[^/]+)', RESTforAPoll.as_view(resource=PollItemResource)),

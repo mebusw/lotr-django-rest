@@ -21,7 +21,6 @@ class Choice(models.Model):
 class Cycle(models.Model):
     name = models.CharField(max_length=150)
     en_name = models.CharField(max_length=150)
-    #package_id = models.IntegerField()
 
     def __str__(self):
         return self.name.encode('utf-8')

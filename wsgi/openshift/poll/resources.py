@@ -21,4 +21,18 @@ class PollItemResource(ModelResource):
     
     def choices(self, instance):
         return instance.choice_set    
-        #return reverse('choice', kwargs={'choice': 'no'})
+        #return reverse('index', args=[instance.id])
+
+class CycleItemResource(ModelResource):  
+    model = Cycle  
+    fields = ('name', 'en_name', 'package')
+    
+    def package(self, instance):
+        return instance.package_set
+
+class PackageItemResource(ModelResource):  
+    model = Package  
+    fields = ('name', 'en_name', 'type', 'cycle')
+
+    def cycle(self, instance):
+        return instance.cycle
