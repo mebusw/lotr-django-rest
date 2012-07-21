@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from djangorestframework.views import View 
 from django.core.context_processors import csrf
+import simplejson as json
     
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -44,15 +45,22 @@ def results(request, poll_id):
  
 
 # Customerized REST view
-class RESTforAPoll(View):  
+class RESTforPollAndChoice(View):  
     def get(self, request, *args, **kwargs):  
         return 'get pid=%s cid=%s' % (kwargs['pid'], kwargs['cid'])
     def delete(self, request, *args, **kwargs):  
-        return 'delete id=%s' % kwargs['id']
+        return 'delete pid=%s cid=%s' % (kwargs['pid'], kwargs['cid'])
     def put(self, request, *args, **kwargs):  
-        return 'put id=%s' % kwargs['id']
+        return 'put pid=%s cid=%s' % (kwargs['pid'], kwargs['cid'])
     def post(self, request, *args, **kwargs):  
-        return 'post id=%s' % kwargs['id']
+        return 'post pid=%s cid=%s' % (kwargs['pid'], kwargs['cid'])
 
+class RESTforPoll(View):  
+    def get(self, request, *args, **kwargs):
+        pl = Poll.objects.all().order_by('-pub_date')[:5]
+        pp=[]
+        for p in pl:
+            pp.append(p.question)
+        return json.dumps(pp)
 
 
