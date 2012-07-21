@@ -13,7 +13,6 @@ def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
     return render_to_response('index.html', {'latest_poll_list': latest_poll_list})
     
-    
 def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     #return render_to_response('detail.html', {'poll': p})
@@ -44,17 +43,16 @@ def results(request, poll_id):
 
  
 
+# Customerized REST view
 class RESTforAPoll(View):  
     def get(self, request, *args, **kwargs):  
-        return 'get %s' % kwargs['id']
+        return 'get pid=%s cid=%s' % (kwargs['pid'], kwargs['cid'])
     def delete(self, request, *args, **kwargs):  
-        return 'delete %s' % args['id']
+        return 'delete id=%s' % kwargs['id']
     def put(self, request, *args, **kwargs):  
-        return 'put %s' % args['id']
-
-class RESTforPolls(View):  
-    def get(self, request, *args, **kwargs):  
-        return 'get all'
+        return 'put id=%s' % kwargs['id']
     def post(self, request, *args, **kwargs):  
-        return 'post new'
+        return 'post id=%s' % kwargs['id']
+
+
 
