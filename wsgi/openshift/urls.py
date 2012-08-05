@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^$', 'openshift.views.home', name='home'),
     url(r'^about/', 'openshift.views.about', name='about'),
 
+    
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
@@ -25,4 +26,6 @@ urlpatterns += patterns('openshift.poll.views',
     (r'^polls/(?P<poll_id>\d+)/$', 'detail'),
     (r'^polls/(?P<poll_id>\d+)/results/$', 'results'),
     (r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'), 
+    (r'^polls/login/', 'login'), 
+    (r'^polls/userinfo/', 'userinfo'), 
 )                        

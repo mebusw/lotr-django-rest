@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from djangorestframework.views import View 
 from django.core.context_processors import csrf
 import simplejson as json
+import django.contrib.auth
     
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
@@ -42,7 +43,27 @@ def results(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('results.html', {'poll': p})
 
- 
+def login(request):
+    rrr = {}
+    rrr.update(csrf(request))
+    return render_to_response('login.html', rrr)
+
+def userinfo(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = django.contrib.auth.authenticate(username=username, password=password)
+    if user is not None:
+        django.contrib.auth.login(request, user)
+        return render_to_response('userinfo.html', {'s':dir(user), 'u':user.username, 
+                                                    'p':user.password, 'is':user.is_authenticated,
+                                                    'perm':user.get_all_permissions})
+#        return render_to_response('userinfo.html', context_instance=RequestContext(request))
+
+    else:
+        return HttpResponseRedirect(reverse('openshift.poll.views.login'))
+
+
+
 
 # Customerized REST view
 class RESTforPollAndChoice(View):  
