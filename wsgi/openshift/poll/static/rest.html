@@ -15,11 +15,16 @@
         $("#send").click(function() {
             console.log($.parseJSON($('#data').val()));
             $.ajax({
-               url: $('#url').val(),
+               url: $('#url').val() + '?format=json',
+               //contentType: 'application/json',
+               //dataType: 'json',
                type: $("input[type='radio'][name='type']:checked").val(),
                data: $.parseJSON($('#data').val()),
-               success: function(response) {
-                    $('#response').append(response);
+               success: function(response, textStatus) {
+                    //alert();
+                    console.log(response);
+                    console.log(typeof(response));
+                    $('#response').append(response.toString());
                }
             });       
         });
