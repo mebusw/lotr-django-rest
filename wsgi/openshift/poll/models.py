@@ -1,5 +1,7 @@
 ﻿from django.db import models
+import logging
 
+logger = logging.getLogger('myproject.custom')
 
 # Create your models here.
 class Poll(models.Model):
@@ -15,6 +17,7 @@ class Choice(models.Model):
     votes = models.IntegerField()
 
     def __str__(self):
+        logger.info('Someone calling me')
         return self.choice.encode('utf-8')
 
     
