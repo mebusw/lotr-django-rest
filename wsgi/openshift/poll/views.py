@@ -21,8 +21,7 @@ def index(request):
     
 def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
-    #return render_to_response('detail.html', {'poll': p})
-    return HttpResponse([p.pk, p.question])
+    return render_to_response('detail.html', {'poll': p})
     
 def vote(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)

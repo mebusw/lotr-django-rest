@@ -34,6 +34,7 @@ class ChoiceModelTest(TestCase):
         self.assertEquals(choice.votes, 0)
 
 class RestViewTest(TestCase):
+    # python manage.py dumpdata auth.User --indent=2 > poll/fixtures/admin_user.json
     fixtures = ['admin_user.json']
     
     def test_root_url(self):
@@ -58,7 +59,7 @@ class RestViewTest(TestCase):
         response = self.client.login(username='admin', password='admin')
         self.assertTrue(response)
 
-    def test_root_url_shows_all_polls(self):
+    def test_poll_url_shows_all_polls(self):
         poll1 = Poll(question='6 times 7', pub_date=timezone.now())
         poll1.save()
         poll2 = Poll(question='life, the universe and everything', pub_date=timezone.now())
@@ -75,6 +76,22 @@ class RestViewTest(TestCase):
 
         # check the poll names appear on the page
         self.assertIn(poll1.question, response.content)
+        self.assertIn(poll2.question, response.content)
+
+    def test_poll_url_show_poll_2(self):
+        poll1 = Poll(question='6 times 7', pub_date=timezone.now())
+        poll1.save()
+        poll2 = Poll(question='life, the universe and everything', pub_date=timezone.now())
+        poll2.save()
+
+        response = self.client.get('/poll/polls/%d/' % poll2.id)
+        self.assertTemplateUsed(response, 'detail.html')
+
+        # check we've passed the polls to the template
+        polls_in_context = response.context['poll']
+        self.assertEquals(polls_in_context, poll2)
+
+        # check the poll names appear on the page
         self.assertIn(poll2.question, response.content)
         
 class SimpleTest(TestCase):
