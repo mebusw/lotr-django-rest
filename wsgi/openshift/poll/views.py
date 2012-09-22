@@ -10,6 +10,7 @@ from djangorestframework.views import View
 from django.core.context_processors import csrf
 import simplejson as json
 import django.contrib.auth
+from forms import PollVoteForm
 
 import logging
 logger = logging.getLogger('myproject.custom')
@@ -21,7 +22,8 @@ def index(request):
     
 def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
-    return render_to_response('detail.html', {'poll': p})
+    form = PollVoteForm(poll=p)
+    return render(request, 'poll.html', {'poll': p, 'form': form})
     
 def vote(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
