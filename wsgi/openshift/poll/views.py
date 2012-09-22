@@ -41,7 +41,7 @@ def vote(request, poll_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse('openshift.poll.views.results', args=(p.id, )))
+        return HttpResponseRedirect(reverse('poll.views.results', args=(p.id, )))
         
 def results(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
@@ -64,7 +64,7 @@ def userinfo(request):
 #        return render_to_response('userinfo.html', context_instance=RequestContext(request))
 
     else:
-        return HttpResponseRedirect(reverse('openshift.poll.views.login'))
+        return HttpResponseRedirect(reverse('poll.views.login'))
 
 
 

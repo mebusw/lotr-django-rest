@@ -1,6 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
 from poll.resources import *
-from poll import views
 from poll.views import *
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 
@@ -20,10 +19,11 @@ urlpatterns = patterns('',
     (r'package/', ListOrCreateModelView.as_view(resource=PackageItemResource)),
 )
 
-# urlpatterns += patterns('openshift.poll.views',
-   # url(r'tolls/', 'index'),
-# )
-
-urlpatterns += patterns('',
-    url(r'tolls/', index),
-)
+urlpatterns += patterns('poll.views',
+    (r'^polls/$', 'index'),
+    (r'^polls/(?P<poll_id>\d+)/$', 'detail'),
+    (r'^polls/(?P<poll_id>\d+)/results/$', 'results'),
+    (r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'), 
+    (r'^polls/login/', 'login'), 
+    (r'^polls/userinfo/', 'userinfo'), 
+)   

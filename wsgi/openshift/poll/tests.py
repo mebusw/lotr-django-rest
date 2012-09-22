@@ -48,7 +48,7 @@ class RestViewTest(TestCase):
         poll2 = Poll(question='life, the universe and everything', pub_date=timezone.now())
         poll2.save()
 
-        response = self.client.get('/polls/')
+        response = self.client.get('/poll/polls/')
         ##logger.info(response)
         self.assertTemplateUsed(response, 'index.html')
 
@@ -61,25 +61,6 @@ class RestViewTest(TestCase):
         self.assertIn(poll1.question, response.content)
         self.assertIn(poll2.question, response.content)
         
-    def test_api_url_shows_all_polls(self):
-        poll1 = Poll(question='6 times 7', pub_date=timezone.now())
-        poll1.save()
-        poll2 = Poll(question='life, the universe and everything', pub_date=timezone.now())
-        poll2.save()
-
-        response = self.client.get('/api/tolls/')
-        ##logger.info(response)
-        self.assertTemplateUsed(response, 'index.html')
-
-        # check we've passed the polls to the template
-        polls_in_context = response.context['latest_poll_list']
-        ##logger.info(response.context)
-        self.assertEquals(list(polls_in_context), [poll1, poll2])
-
-        # check the poll names appear on the page
-        self.assertIn(poll1.question, response.content)
-        self.assertIn(poll2.question, response.content)
-
 class SimpleTest(TestCase):
     def test_basic_addition(self):
         """
