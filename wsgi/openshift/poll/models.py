@@ -14,13 +14,13 @@ class Poll(models.Model):
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
     choice = models.CharField(max_length=200)
-    votes = models.IntegerField()
+    votes = models.IntegerField(verbose_name="VOTES", default=0)
 
     def __str__(self):
-        logger.info('Someone calling me')
+        logger.info('some calling me')
         return self.choice.encode('utf-8')
 
-    
+        
 class Cycle(models.Model):
     name = models.CharField(max_length=150)
     en_name = models.CharField(max_length=150)
