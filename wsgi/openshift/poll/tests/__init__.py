@@ -1,0 +1,1 @@
+from poll.tests.tests import *
