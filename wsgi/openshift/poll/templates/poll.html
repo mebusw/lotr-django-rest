@@ -12,7 +12,7 @@
 
 
     {% if poll.total_votes != 0 %}
-      <p>{{ poll.total_votes }} votes</p>
+      <p>{{ poll.total_votes }} vote{{ poll.total_votes|pluralize }}</p>
     {% else %}
       <p>No-one has voted on this poll yet</p>
     {% endif %}
