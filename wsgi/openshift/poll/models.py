@@ -11,6 +11,9 @@ class Poll(models.Model):
     def __str__(self):
         return self.question.encode('utf-8')
 
+    def total_votes(self):
+        return sum(c.votes for c in self.choice_set.all())
+
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
     choice = models.CharField(max_length=200)
@@ -20,7 +23,13 @@ class Choice(models.Model):
         logger.info('some calling me')
         return self.choice.encode('utf-8')
 
-        
+    def percentage(self):
+        total_votes_on_poll = sum(c.votes for c in self.poll.choice_set.all())
+        try:
+            return 100.0 * self.votes / total_votes_on_poll
+        except ZeroDivisionError:
+            return 0    
+
 class Cycle(models.Model):
     name = models.CharField(max_length=150)
     en_name = models.CharField(max_length=150)
