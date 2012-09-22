@@ -7,6 +7,7 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from django.utils import timezone
 from models import Poll, Choice
+from django.contrib.auth.models import User
 
 import logging
 logger = logging.getLogger('myproject.custom')
@@ -33,6 +34,8 @@ class ChoiceModelTest(TestCase):
         self.assertEquals(choice.votes, 0)
 
 class RestViewTest(TestCase):
+    fixtures = ['admin_user.json']
+    
     def test_root_url(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home/home.html')
@@ -42,7 +45,13 @@ class RestViewTest(TestCase):
         # don't forget the last '/' of '/about/'
         response = self.client.get('/about/')
         self.assertTemplateUsed(response, 'about/about.html')
-
+    def test_login(self):
+        ##logger.info(User.objects.all())
+        response = self.client.login(username='fred', password='secret')
+        self.assertFalse(response)
+        response = self.client.login(username='admin', password='admin')
+        self.assertTrue(response)
+        
     def test_root_url_shows_all_polls(self):
         poll1 = Poll(question='6 times 7', pub_date=timezone.now())
         poll1.save()
