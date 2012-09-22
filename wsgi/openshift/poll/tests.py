@@ -36,7 +36,8 @@ class RestViewTest(TestCase):
     def test_root_url(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'home/home.html')
-        
+        self.failUnlessEqual(response.status_code, 200)
+
     def test_about_url(self):
         # don't forget the last '/' of '/about/'
         response = self.client.get('/about/')
