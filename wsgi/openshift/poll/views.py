@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/python
 # -*- coding: utf-8 -*-  
 import os
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.shortcuts import get_object_or_404
 from poll.models import *
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,10 +10,14 @@ from djangorestframework.views import View
 from django.core.context_processors import csrf
 import simplejson as json
 import django.contrib.auth
+
+import logging
+logger = logging.getLogger('myproject.custom')
     
 def index(request):
     latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
-    return render_to_response('index.html', {'latest_poll_list': latest_poll_list})
+    context = {'latest_poll_list': latest_poll_list}
+    return render(request, 'index.html', context)
     
 def detail(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
