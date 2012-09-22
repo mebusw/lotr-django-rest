@@ -1,5 +1,8 @@
 from django import forms
 
+import logging
+logger = logging.getLogger('myproject.custom')
+
 class PollVoteForm(forms.Form):
     vote = forms.ChoiceField(widget=forms.RadioSelect())
     

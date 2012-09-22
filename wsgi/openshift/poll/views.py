@@ -55,9 +55,10 @@ def results(request, poll_id):
     return render_to_response('results.html', {'poll': p})
 
 def login(request):
-    rrr = {}
-    rrr.update(csrf(request))
-    return render_to_response('login.html', rrr)
+    ##rrr = {}
+    ##rrr.update(csrf(request))
+    ##return render_to_response('login.html', rrr)
+    return render(request, 'login.html')
 
 def userinfo(request):
     username = request.POST['username']

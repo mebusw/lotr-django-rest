@@ -78,6 +78,7 @@ class PollsViewTest(TestCase):
         # by checking for the choice text
         self.assertIn(choice1.choice, response.content.replace('&#39;', "'"))
         self.assertIn(choice2.choice, response.content.replace('&#39;', "'"))
+        self.assertIn('csrf', response.content)
 
     def test_view_can_handle_votes_via_POST(self):
         # set up a poll with choices
