@@ -45,13 +45,19 @@ class RestViewTest(TestCase):
         # don't forget the last '/' of '/about/'
         response = self.client.get('/about/')
         self.assertTemplateUsed(response, 'about/about.html')
+
     def test_login(self):
+        response = self.client.post('/poll/polls/userinfo/', {'username': 'admin', 'password': 'admin'})
+        self.assertTemplateUsed(response, 'userinfo.html')
+        self.assertEquals('admin', response.context['u'])
+        
+    def test_django_auth(self):
         ##logger.info(User.objects.all())
         response = self.client.login(username='fred', password='secret')
         self.assertFalse(response)
         response = self.client.login(username='admin', password='admin')
         self.assertTrue(response)
-        
+
     def test_root_url_shows_all_polls(self):
         poll1 = Poll(question='6 times 7', pub_date=timezone.now())
         poll1.save()
