@@ -79,6 +79,7 @@ class PollsViewTest(TestCase):
         self.assertIn(choice1.choice, response.content.replace('&#39;', "'"))
         self.assertIn(choice2.choice, response.content.replace('&#39;', "'"))
         self.assertIn('csrf', response.content)
+        self.assertIn('0 %', response.content)
 
     def test_view_can_handle_votes_via_POST(self):
         # set up a poll with choices
@@ -101,6 +102,7 @@ class PollsViewTest(TestCase):
 
         # check it's votes have gone up by 1
         self.assertEquals(choice_in_db.votes, 4)
+        self.assertEquals(choice_in_db.percentage(), 80)
 
         # always redirect after a POST - even if, in this case, we go back
         # to the same page.
