@@ -27,7 +27,7 @@ class PollsViewTest(TestCase):
         response = self.client.get('/about/')
         self.assertTemplateUsed(response, 'about/about.html')
 
-    def test_login(self):
+    def test_login_via_POST(self):
         response = self.client.post('/poll/polls/userinfo/', {'username': 'admin', 'password': 'admin'})
         self.assertTemplateUsed(response, 'userinfo.html')
         self.assertEquals('admin', response.context['u'])
@@ -78,4 +78,30 @@ class PollsViewTest(TestCase):
         # by checking for the choice text
         self.assertIn(choice1.choice, response.content.replace('&#39;', "'"))
         self.assertIn(choice2.choice, response.content.replace('&#39;', "'"))
-                
+
+    def test_view_can_handle_votes_via_POST(self):
+        # set up a poll with choices
+        poll1 = Poll(question='6 times 7', pub_date=timezone.now())
+        poll1.save()
+        choice1 = Choice(poll=poll1, choice='42', votes=1)
+        choice1.save()
+        choice2 = Choice(poll=poll1, choice='The Ultimate Answer', votes=3)
+        choice2.save()
+
+        # set up our POST data - keys and values are strings
+        post_data = {'vote': str(choice2.id)}
+
+        # make our request to the view
+        poll_url = '/poll/polls/%d/' % (poll1.id,)
+        response = self.client.post(poll_url, data=post_data)
+
+        # retrieve the updated choice from the database
+        choice_in_db = Choice.objects.get(pk=choice2.id)
+
+        # check it's votes have gone up by 1
+        self.assertEquals(choice_in_db.votes, 4)
+
+        # always redirect after a POST - even if, in this case, we go back
+        # to the same page.
+        self.assertRedirects(response, poll_url)
+        

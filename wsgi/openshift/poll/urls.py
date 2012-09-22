@@ -21,7 +21,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('poll.views',
     (r'^polls/$', 'index'),
-    (r'^polls/(?P<poll_id>\d+)/$', 'detail'),
+    (r'^polls/(?P<poll_id>\d+)/$', 'poll'),
     (r'^polls/(?P<poll_id>\d+)/results/$', 'results'),
     (r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'), 
     (r'^polls/login/', 'login'), 

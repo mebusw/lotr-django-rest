@@ -20,7 +20,13 @@ def index(request):
     context = {'latest_poll_list': latest_poll_list}
     return render(request, 'index.html', context)
     
-def detail(request, poll_id):
+def poll(request, poll_id):
+    if request.method == 'POST':
+        choice = Choice.objects.get(id=request.POST['vote'])
+        choice.votes += 1
+        choice.save()
+        return HttpResponseRedirect(reverse('poll.views.poll', args=[poll_id,]))
+        
     p = get_object_or_404(Poll, pk=poll_id)
     form = PollVoteForm(poll=p)
     return render(request, 'poll.html', {'poll': p, 'form': form})
