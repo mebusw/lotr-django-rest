@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 """
 This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
@@ -6,7 +7,7 @@ Replace this with more appropriate tests for your application.
 """
 from django.test import TestCase
 from django.utils import timezone
-from poll.models import Poll, Choice
+from poll.models import Poll, Choice, Cycle
 from django.contrib.auth.models import User
 from poll.forms import PollVoteForm
 
@@ -107,4 +108,10 @@ class PollsViewTest(TestCase):
         # always redirect after a POST - even if, in this case, we go back
         # to the same page.
         self.assertRedirects(response, poll_url)
+    def test_get_all_cycles_via_REST(self):
+        # set up a poll with choices
+        cycle1 = Cycle(name=u'中国', en_name='chinese')
+        cycle1.save()
         
+        response = self.client.get('/poll/cycle/')
+        self.assertIn('"name": "\\u4e2d\\u56fd"', response.content)

@@ -1,4 +1,5 @@
-﻿from django.db import models
+﻿# -*- coding: utf-8 -*-
+from django.db import models
 import logging
 
 logger = logging.getLogger('myproject.custom')
@@ -20,9 +21,13 @@ class Choice(models.Model):
     votes = models.IntegerField(verbose_name="VOTES", default=0)
 
     def __str__(self):
-        logger.info('some calling me')
+        logger.info('calling Choice.__str__')
         return self.choice.encode('utf-8')
 
+    def __unicode__(self):
+        logger.info('calling Choice.__unicode__')
+        return self.choice.encode('utf-8')
+        
     def percentage(self):
         total_votes_on_poll = sum(c.votes for c in self.poll.choice_set.all())
         try:
@@ -35,7 +40,12 @@ class Cycle(models.Model):
     en_name = models.CharField(max_length=150)
 
     def __str__(self):
-        return self.name.encode('utf-8')
+        logger.info('calling Cycle.__str__')
+        return self.choice.encode('utf-8')
+
+    def __unicode__(self):
+        logger.info('calling Cycle.__unicode__')
+        return self.choice.encode('utf-8')
 
         
 class Package(models.Model):
