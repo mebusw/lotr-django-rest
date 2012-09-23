@@ -94,6 +94,6 @@ class RESTforPoll(View):
         pp=[]
         for p in pl:
             pp.append(p.question)
-        return json.dumps(pp)
+        return pp
 
 
