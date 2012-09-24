@@ -7,7 +7,7 @@ from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 urlpatterns = patterns('',
 
     # customed view/handler
-    (r'poll/(?P<pid>[^/]+)/choice/(?P<cid>[^/]+)', RESTforPollAndChoice.as_view(resource=PollItemResource)),
+    (r'poll/(?P<pid>[^/]+)/choice/(?P<cid>[^/]+)', RESTforPollAndChoice.as_view(resource=ChoiceItemResource)),
     (r'poll/', RESTforPoll.as_view(resource=PollItemResource)),
                        
     # built-in view/handler
