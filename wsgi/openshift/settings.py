@@ -200,3 +200,6 @@ LOGGING = {
         }
     }
 }
+
+LOGIN_URL = '/admin/'
+ADMIN_MEDIA_PREFIX = ''

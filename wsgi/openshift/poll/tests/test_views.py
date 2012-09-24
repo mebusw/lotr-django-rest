@@ -10,6 +10,7 @@ from django.utils import timezone
 from poll.models import Poll, Choice, Cycle
 from django.contrib.auth.models import User
 from poll.forms import PollVoteForm
+import django.contrib.auth
 
 import logging
 logger = logging.getLogger('myproject.custom')
@@ -29,9 +30,12 @@ class PollsViewTest(TestCase):
         self.assertTemplateUsed(response, 'about/about.html')
 
     def test_login_via_POST(self):
+        self.client.login(username='admin', password='admin')
+
         response = self.client.post('/poll/polls/userinfo/', {'username': 'admin', 'password': 'admin'})
         self.assertTemplateUsed(response, 'userinfo.html')
         self.assertEquals('admin', response.context['u'])
+        self.client.logout()
         
     def test_django_auth(self):
         ##logger.info(User.objects.all())
