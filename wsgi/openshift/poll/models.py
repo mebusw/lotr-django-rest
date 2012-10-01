@@ -91,3 +91,33 @@ class Membership(models.Model):
     date_joined = models.DateField()
     invite_reason = models.CharField(max_length=64)
     
+
+    
+class Blog(models.Model):
+    name = models.CharField(max_length=100)
+    tagline = models.TextField()
+
+    def __unicode__(self):
+        return self.name
+
+class Author(models.Model):
+    name = models.CharField(max_length=50)
+    gender = models.CharField(max_length=1, choices=(('Female', 'Female'), ('Male', 'Male')), default='Male')
+    email = models.EmailField()
+
+    def __unicode__(self):
+        return self.name
+
+class Entry(models.Model):
+    blog = models.ForeignKey(Blog)
+    headline = models.CharField(max_length=255)
+    body_text = models.TextField()
+    pub_date = models.DateTimeField()
+    mod_date = models.DateTimeField()
+    authors = models.ManyToManyField(Author)
+    n_comments = models.IntegerField()
+    n_pingbacks = models.IntegerField()
+    rating = models.IntegerField()
+
+    def __unicode__(self):
+        return self.headline    

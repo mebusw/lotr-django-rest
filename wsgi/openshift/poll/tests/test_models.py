@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from datetime import datetime, time, date, timedelta
 from poll.models import *
-
+from django.db.models import Q, F   
 
 class PollModelTest(TestCase):
     def test_creating_a_new_poll_and_saving_it_to_the_database(self):
@@ -72,4 +72,24 @@ class ManyToManyModelTest(TestCase):
         self.assertEqual("Ringo Starr", beatles.members.all()[0].name)
         self.assertEqual("The Beatles", ringo.group_set.all()[0].name)
 
+    def test_many_to_many_directly(self):
+        blog = Blog(name='Beatles Blog', tagline='All the latest Beatles news.')
+        blog.save()
+        entry = Entry.objects.create(headline='UFO found', blog=blog, pub_date=datetime.now(), mod_date=datetime.now(), n_comments=5, n_pingbacks=3, rating=5)
+        john = Author.objects.create(name="John")
+        paul = Author.objects.create(name="Paul", gender='Female')
+        george = Author.objects.create(name="George", gender='Female')
+        ringo = Author.objects.create(name="Ringo")
+        entry.authors.add(john, paul, george, ringo)
 
+        self.assertEqual(3, len(Author.objects.filter(name__contains='o')))
+        self.assertEqual(1, len(Entry.objects.filter(blog__name__iexact='beatles blog')))
+        
+        filtered_author = map(lambda x: unicode(x), Author.objects.filter(name__contains='o', name__icontains='r'))
+        self.assertEqual([u'George', u'Ringo'], filtered_author)
+        
+        filtered_author = map(lambda x: unicode(x), Author.objects.filter(name__contains='o').filter(gender='Female'))
+        self.assertEqual([u'George'], filtered_author)
+
+        filtered_author = map(lambda x: unicode(x), Author.objects.filter(Q(name__contains='o') | Q(gender='Female')))
+        self.assertEqual([u'John', u'Paul', u'George', u'Ringo'], filtered_author)        
