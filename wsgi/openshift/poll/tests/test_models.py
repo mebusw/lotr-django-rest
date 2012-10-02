@@ -60,7 +60,7 @@ class ChoiceModelTest(TestCase):
         choice = Choice()
         self.assertEquals(choice.votes, 0)
 
-class ManyToManyModelTest(TestCase):
+class ManyToManyModelThroughAModelTest(TestCase):
     def test_many_to_many_through_a_model(self):
         ringo = Person.objects.create(name="Ringo Starr")
         paul = Person.objects.create(name="Paul McCartney")
@@ -72,7 +72,8 @@ class ManyToManyModelTest(TestCase):
         self.assertEqual("Ringo Starr", beatles.members.all()[0].name)
         self.assertEqual("The Beatles", ringo.group_set.all()[0].name)
 
-    def test_many_to_many_directly(self):
+class ManyToManyModelDirectlyTest(TestCase):
+    def setUp(self):
         blog = Blog(name='Beatles Blog', tagline='All the latest Beatles news.')
         blog.save()
         entry = Entry.objects.create(headline='UFO found', blog=blog, pub_date=datetime.now(), mod_date=datetime.now(), n_comments=5, n_pingbacks=3, rating=5)
@@ -82,14 +83,30 @@ class ManyToManyModelTest(TestCase):
         ringo = Author.objects.create(name="Ringo")
         entry.authors.add(john, paul, george, ringo)
 
+    def test_basic_filter(self):
         self.assertEqual(3, len(Author.objects.filter(name__contains='o')))
         self.assertEqual(1, len(Entry.objects.filter(blog__name__iexact='beatles blog')))
         
-        filtered_author = map(lambda x: unicode(x), Author.objects.filter(name__contains='o', name__icontains='r'))
+        filtered_author = self.name_map_helper(Author.objects.filter(name__contains='o', name__icontains='r'))
         self.assertEqual([u'George', u'Ringo'], filtered_author)
         
-        filtered_author = map(lambda x: unicode(x), Author.objects.filter(name__contains='o').filter(gender='Female'))
+        filtered_author = self.name_map_helper(Author.objects.filter(name__contains='o').filter(gender='Female'))
         self.assertEqual([u'George'], filtered_author)
 
-        filtered_author = map(lambda x: unicode(x), Author.objects.filter(Q(name__contains='o') | Q(gender='Female')))
+    def test_complex_filter(self):
+        filtered_author = self.name_map_helper(Author.objects.filter(Q(name__contains='o') | Q(gender='Female')))
         self.assertEqual([u'John', u'Paul', u'George', u'Ringo'], filtered_author)        
+        
+    def test_filter_with_reference_fields(self):
+        filtered_entry = Entry.objects.filter(rating__lt=F('n_comments') + F('n_pingbacks'))
+        self.assertEqual(1, len(filtered_entry))
+        
+    def test_filter_with_pk_lookup(self):
+        filtered_author = self.name_map_helper(Author.objects.filter(pk__in=[1, 2]))
+        self.assertEqual([u'John', u'Paul'], filtered_author)
+        
+        filtered_author = self.name_map_helper(Author.objects.filter(id=3))
+        self.assertEqual([u'George'], filtered_author)
+
+    def name_map_helper(self, lst):
+        return map(lambda x: unicode(x), lst)
