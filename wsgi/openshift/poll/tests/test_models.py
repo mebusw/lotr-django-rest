@@ -54,6 +54,16 @@ class PollModelTest(TestCase):
         c2.votes = 22
         c2.save()
         self.assertEquals(p.total_votes(), 1022)
+
+    def test_relationships_backwards(self):
+        p = Poll(question='where', pub_date=timezone.now())
+        p.save()
+        c1 = Choice(poll=p, choice='here', votes=0)
+        c1.save()
+        c2 = Choice(poll=p, choice='there', votes=0)
+        c2.save()
+        
+        self.assertEquals(2, p.choice_set.count())
         
 class ChoiceModelTest(TestCase):
     def test_choice_defaults(self):
@@ -82,10 +92,27 @@ class ManyToManyModelDirectlyTest(TestCase):
         george = Author.objects.create(name="George", gender='Female')
         ringo = Author.objects.create(name="Ringo")
         entry.authors.add(john, paul, george, ringo)
+    
+        entry2 = Entry(headline='A song of ice and fire', blog=blog, pub_date=datetime.now(), mod_date=datetime.now(), n_comments=15, n_pingbacks=23, rating=5)        
+        entry2.save()
+        entry2.authors = [john, ringo]
+    
+    def test_relationships(self):
+        entries = Entry.objects.all()[:2]
+        entry1 = entries[0]
+        entry2 = entries[1]
+        self.assertEqual(4, entry1.authors.count())
+        self.assertEqual(2, entry2.authors.count())
 
+        author1 = Author.objects.get(pk=1)
+        author2 = Author.objects.get(pk=2)
+        self.assertEqual(2, author1.entry_set.count())
+        self.assertEqual(1, author2.entry_set.count())
+        
+           
     def test_basic_filter(self):
         self.assertEqual(3, len(Author.objects.filter(name__contains='o')))
-        self.assertEqual(1, len(Entry.objects.filter(blog__name__iexact='beatles blog')))
+        self.assertEqual(2, len(Entry.objects.filter(blog__name__iexact='beatles blog')))
         
         filtered_author = self.name_map_helper(Author.objects.filter(name__contains='o', name__icontains='r'))
         self.assertEqual([u'George', u'Ringo'], filtered_author)
@@ -99,7 +126,7 @@ class ManyToManyModelDirectlyTest(TestCase):
         
     def test_filter_with_reference_fields(self):
         filtered_entry = Entry.objects.filter(rating__lt=F('n_comments') + F('n_pingbacks'))
-        self.assertEqual(1, len(filtered_entry))
+        self.assertEqual(2, len(filtered_entry))
         
     def test_filter_with_pk_lookup(self):
         filtered_author = self.name_map_helper(Author.objects.filter(pk__in=[1, 2]))
@@ -107,6 +134,13 @@ class ManyToManyModelDirectlyTest(TestCase):
         
         filtered_author = self.name_map_helper(Author.objects.filter(id=3))
         self.assertEqual([u'George'], filtered_author)
+
+    def test_delete_object(self):
+        author  = Author.objects.get(pk=1)
+        self.assertEqual(3, len(Author.objects.filter(name__contains='o')))
+        author.delete()
+        self.assertEqual(2, len(Author.objects.filter(name__contains='o')))
+        
 
     def name_map_helper(self, lst):
         return map(lambda x: unicode(x), lst)
