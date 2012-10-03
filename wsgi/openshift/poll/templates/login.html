@@ -1,7 +1,7 @@
 <h1>Login Here</h1>
 
 <p>{{ error_massage }}</p>
-<form action='/polls/userinfo/' method='post'>
+<form action='../userinfo/' method='post'>
 {% csrf_token %}
     <input name='username' value='mebusw' />
     <input name='password' type='password' value='' />

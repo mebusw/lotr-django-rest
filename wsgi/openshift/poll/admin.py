@@ -27,3 +27,7 @@ admin.site.register(Package)
 admin.site.register(Cycle, CycleAdmin)
 admin.site.register(Scenario)
 admin.site.register(Session)
+
+admin.site.register(Person)
+admin.site.register(Group)
+admin.site.register(Membership)

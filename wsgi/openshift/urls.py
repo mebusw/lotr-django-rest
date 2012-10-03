@@ -18,14 +18,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
                        
     # Urls of installed app
-    (r'^api/', include(poll.urls.urlpatterns)),
+    (r'^poll/', include(poll.urls.urlpatterns)),
 )
 
-urlpatterns += patterns('openshift.poll.views',
-    (r'^polls/$', 'index'),
-    (r'^polls/(?P<poll_id>\d+)/$', 'detail'),
-    (r'^polls/(?P<poll_id>\d+)/results/$', 'results'),
-    (r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'), 
-    (r'^polls/login/', 'login'), 
-    (r'^polls/userinfo/', 'userinfo'), 
-)                        
+                     

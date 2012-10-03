@@ -1,4 +1,5 @@
-﻿from django.db import models
+﻿# -*- coding: utf-8 -*-
+from django.db import models
 import logging
 
 logger = logging.getLogger('myproject.custom')
@@ -8,25 +9,33 @@ class Poll(models.Model):
     question = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     
-    def __str__(self):
-        return self.question.encode('utf-8')
+    def __unicode__(self):
+        return self.question
+
+    def total_votes(self):
+        return sum(c.votes for c in self.choice_set.all())
 
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
     choice = models.CharField(max_length=200)
-    votes = models.IntegerField()
+    votes = models.IntegerField(verbose_name="VOTES", default=0)
 
-    def __str__(self):
-        logger.info('Someone calling me')
-        return self.choice.encode('utf-8')
+    def __unicode__(self):
+        return self.name
+        
+    def percentage(self):
+        total_votes_on_poll = sum(c.votes for c in self.poll.choice_set.all())
+        try:
+            return 100.0 * self.votes / total_votes_on_poll
+        except ZeroDivisionError:
+            return 0    
 
-    
 class Cycle(models.Model):
     name = models.CharField(max_length=150)
     en_name = models.CharField(max_length=150)
 
-    def __str__(self):
-        return self.name.encode('utf-8')
+    def __unicode__(self):
+        return self.name
 
         
 class Package(models.Model):
@@ -36,8 +45,8 @@ class Package(models.Model):
     cycle = models.ForeignKey(Cycle)
     release_date = models.DateField()
     
-    def __str__(self):
-        return self.name.encode('utf-8')
+    def __unicode__(self):
+        return self.name
     
 class Scenario(models.Model):
     name = models.CharField(max_length=150)
@@ -46,8 +55,8 @@ class Scenario(models.Model):
     package_id = models.ForeignKey(Cycle)
     difficult_level = models.IntegerField()
 
-    def __str__(self):
-        return self.name.encode('utf-8')
+    def __unicode__(self):
+        return self.name
     
 class Session(models.Model):
     scenario_id = models.ForeignKey(Package)
@@ -57,6 +66,28 @@ class Session(models.Model):
     win = models.IntegerField(choices=((1, 'Y'), (0, 'N')))
     score = models.IntegerField()
 
-    def __str__(self):
+    def __unicode__(self):
         return '%s 战报: %d分' % (self.session_date, self.score)
 
+
+
+class Person(models.Model):
+    name = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.name
+
+    
+class Group(models.Model):
+    name = models.CharField(max_length=128)
+    members = models.ManyToManyField(Person, through='Membership')
+
+    def __unicode__(self):
+        return self.name
+
+class Membership(models.Model):
+    person = models.ForeignKey(Person)
+    group = models.ForeignKey(Group)
+    date_joined = models.DateField()
+    invite_reason = models.CharField(max_length=64)
+    
