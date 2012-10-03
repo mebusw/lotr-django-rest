@@ -57,7 +57,7 @@ class PollsViewTest(TestCase):
         # check we've passed the polls to the template
         polls_in_context = response.context['latest_poll_list']
         ##logger.info(response.context)
-        self.assertEquals(list(polls_in_context), [poll1, poll2])
+        self.assertEquals(list(polls_in_context).sort(), [poll1, poll2].sort())
 
         # check the poll names appear on the page
         self.assertIn(poll1.question, response.content)
