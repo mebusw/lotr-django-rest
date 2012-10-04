@@ -26,4 +26,6 @@ urlpatterns += patterns('poll.views',
     (r'^polls/(?P<poll_id>\d+)/vote/$', 'vote'), 
     (r'^polls/login/', 'login'), 
     (r'^polls/userinfo/', 'userinfo'), 
+    (r'^polls/upload/', 'upload_file'), 
+    
 )   

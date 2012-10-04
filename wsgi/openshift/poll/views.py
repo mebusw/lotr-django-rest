@@ -9,8 +9,9 @@ from djangorestframework.views import View
 from django.core.context_processors import csrf
 import simplejson as json
 import django.contrib.auth
-from forms import PollVoteForm
+from forms import *
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 import logging
 logger = logging.getLogger('myproject.custom')
@@ -54,6 +55,27 @@ def results(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     return render_to_response('results.html', {'poll': p})
 
+def upload_file(request):
+    logger.info(settings.MEDIA_ROOT)
+
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        #logger.info(request.POST)
+        #logger.info(dir(request.FILES['file']))
+        #logger.info(form.errors)
+        if form.is_valid():
+            _handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect(reverse('poll.views.index'))
+    else:
+        form = UploadFileForm()
+    return render(request, 'upload.html', {'form': form})
+
+def _handle_uploaded_file(f):
+    destination = open(settings.MEDIA_ROOT + f.name, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
+    
 def login(request):
     ##rrr = {}
     ##rrr.update(csrf(request))

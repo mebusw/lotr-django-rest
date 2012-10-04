@@ -36,7 +36,17 @@ class PollsViewTest(TestCase):
         self.assertTemplateUsed(response, 'userinfo.html')
         self.assertEquals('admin', response.context['u'])
         self.client.logout()
+    
+    def test_upload_file_via_GET(self):
+        response = self.client.get('/poll/polls/upload/', {'title': 'xyz', 'file': None})
+        self.assertTemplateUsed(response, 'upload.html')
         
+    def test_upload_file_via_POST(self):
+        f = open('views.py')
+        response = self.client.post('/poll/polls/upload/', {'title': 'xyz', 'file': f})
+        f.close()
+        self.assertRedirects(response, '/poll/polls/')
+
     def test_django_auth(self):
         ##logger.info(User.objects.all())
         response = self.client.login(username='fred', password='secret')
