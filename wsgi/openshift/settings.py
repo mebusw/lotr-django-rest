@@ -114,12 +114,22 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
+    # Uncomment to enable per-site cache, which will cache ALL views, be careful!
+    # the "update" middleware must be first in the list, and the "fetch" middleware must be last
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    # Uncomment to enable per-site cache, which will cache ALL views, be careful!
+    # the "update" middleware must be first in the list, and the "fetch" middleware must be last
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
+
+# for the django.middleware.cache.*, caching all views per-site in seconds, be careful!
+CACHE_MIDDLEWARE_SECONDS = 1  
+
 
 ROOT_URLCONF = 'openshift.urls'
 
@@ -141,7 +151,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+     'django.contrib.admindocs',
     'poll',
     'djangorestframework',
     'gunicorn',
@@ -205,4 +215,14 @@ LOGGING = {
 }
 
 LOGIN_URL = '/admin/'
+
+# the path prefix for css files of django admin page
+#
 ADMIN_MEDIA_PREFIX = ''
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',  
+        'LOCATION': '',
+    }
+}

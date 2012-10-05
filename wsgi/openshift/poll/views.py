@@ -12,13 +12,22 @@ import django.contrib.auth
 from forms import *
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
+from django.utils import timezone
 
 import logging
 logger = logging.getLogger('myproject.custom')
     
 def index(request):
-    latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
-    context = {'latest_poll_list': latest_poll_list}
+    logger.info('using cache' + str(timezone.now()))
+    latest_poll_list = cache.get('latest_poll_list')
+    if None == latest_poll_list:
+        latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
+        cache.set('latest_poll_list', latest_poll_list, 1)
+        logger.info('refresh cache')
+
+    context = {'latest_poll_list': latest_poll_list, 'dt':str(timezone.now())}
     return render(request, 'index.html', context)
     
 def poll(request, poll_id):
@@ -75,7 +84,8 @@ def _handle_uploaded_file(f):
     for chunk in f.chunks():
         destination.write(chunk)
     destination.close()
-    
+
+@cache_page(3)    #3 seconds
 def login(request):
     ##rrr = {}
     ##rrr.update(csrf(request))
