@@ -23,7 +23,6 @@ class PollModelTest(TestCase):
         self.assertEquals(only_poll_in_database.question, "What's up?")
         self.assertEquals(only_poll_in_database.pub_date, poll.pub_date)
 
-        logger.info(dir(poll))
     def test_choice_can_calculate_its_own_percentage_of_votes(self):
         poll = Poll(question='who?', pub_date=timezone.now())
         poll.save()
