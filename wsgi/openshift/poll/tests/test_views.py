@@ -11,6 +11,7 @@ from poll.models import Poll, Choice, Cycle
 from django.contrib.auth.models import User
 from poll.forms import PollVoteForm
 import django.contrib.auth
+from django.core.cache import cache
 
 import logging
 logger = logging.getLogger('myproject.custom')
@@ -36,7 +37,8 @@ class PollsViewTest(TestCase):
         self.assertTemplateUsed(response, 'userinfo.html')
         self.assertEquals('admin', response.context['u'])
         self.client.logout()
-    
+
+        
     def test_upload_file_via_GET(self):
         response = self.client.get('/poll/polls/upload/', {'title': 'xyz', 'file': None})
         self.assertTemplateUsed(response, 'upload.html')
@@ -53,6 +55,22 @@ class PollsViewTest(TestCase):
         self.assertFalse(response)
         response = self.client.login(username='admin', password='admin')
         self.assertTrue(response)
+
+
+    def test_index_page_with_caching(self):
+        cached = cache.get('latest_poll_list')
+        self.assertIsNone(cached)
+        response = self.client.get('/poll/polls/')
+        self.assertTemplateUsed(response, 'index.html')
+        self.assertFalse(response.context['isFromCache'])
+
+        cached = cache.get('latest_poll_list')
+        self.assertIsNotNone(cached)        
+        response = self.client.get('/poll/polls/')
+        self.assertTemplateUsed(response, 'index.html')
+        self.assertTrue(response.context['isFromCache'])
+
+        cache.delete('latest_poll_list')
 
     def test_poll_url_shows_all_polls(self):
         poll1 = Poll(question='6 times 7', pub_date=timezone.now())

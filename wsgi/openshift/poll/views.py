@@ -20,14 +20,15 @@ import logging
 logger = logging.getLogger('myproject.custom')
     
 def index(request):
-    logger.info('using cache' + str(timezone.now()))
     latest_poll_list = cache.get('latest_poll_list')
+    isFromCache = True
     if None == latest_poll_list:
         latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
-        cache.set('latest_poll_list', latest_poll_list, 1)
-        logger.info('refresh cache')
+        cache.set('latest_poll_list', latest_poll_list, 2)
+        isFromCache = False
+        #logger.info('refresh cache')
 
-    context = {'latest_poll_list': latest_poll_list, 'dt':str(timezone.now())}
+    context = {'latest_poll_list': latest_poll_list, 'dt':str(timezone.now()), 'isFromCache':isFromCache}
     return render(request, 'index.html', context)
     
 def poll(request, poll_id):
@@ -65,7 +66,7 @@ def results(request, poll_id):
     return render_to_response('results.html', {'poll': p})
 
 def upload_file(request):
-    logger.info(settings.MEDIA_ROOT)
+    #logger.info(settings.MEDIA_ROOT)
 
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)

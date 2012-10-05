@@ -114,20 +114,18 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    # Uncomment to enable per-site cache, which will cache ALL views, be careful!
-    # the "update" middleware must be first in the list, and the "fetch" middleware must be last
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # Uncomment to enable per-site cache, which will cache ALL views, be careful, the "update" middleware must be first in the list, and the "fetch" middleware must be last
+    #'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # Uncomment to enable per-site cache, which will cache ALL views, be careful!
-    # the "update" middleware must be first in the list, and the "fetch" middleware must be last
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # Uncomment to enable per-site cache, which will cache ALL views, be careful, the "update" middleware must be first in the list, and the "fetch" middleware must be last
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
-# for the django.middleware.cache.*, caching all views per-site in seconds, be careful!
+# for the 'django.middleware.cache.*', caching all views per-site in seconds, be careful!
 CACHE_MIDDLEWARE_SECONDS = 1  
 
 
