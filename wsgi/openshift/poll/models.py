@@ -14,7 +14,10 @@ class Poll(models.Model):
 
     def total_votes(self):
         return sum(c.votes for c in self.choice_set.all())
-
+    
+    class Meta:
+        permissions = (("can_deliver_pizzas", "Can deliver pizzas"),)
+        
 class Choice(models.Model):
     poll = models.ForeignKey(Poll)
     choice = models.CharField(max_length=200)

@@ -102,7 +102,8 @@ def userinfo(request):
     ###user = django.contrib.auth.authenticate(username=username, password=password)
     return render(request, 'userinfo.html', {'s':dir(user), 'u':user.username, 
                                                     'p':user.password, 'is':user.is_authenticated,
-                                                    'perm':user.get_all_permissions})
+                                                    'all_perms':user.get_all_permissions, 'groups':user.groups.all, 
+                                                    'user_perms':user.user_permissions.all, 'group_perms':user.get_group_permissions})
 
 
 # Customerized REST view
