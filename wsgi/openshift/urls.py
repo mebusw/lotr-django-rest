@@ -5,6 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 import poll.urls
+import agot.urls
 
 urlpatterns = patterns('',
     # Examples:
@@ -19,6 +20,7 @@ urlpatterns = patterns('',
                        
     # Urls of installed app
     (r'^poll/', include(poll.urls.urlpatterns)),
+    (r'^agot/', include(agot.urls.urlpatterns)),
 )
 
 from django.conf import settings
