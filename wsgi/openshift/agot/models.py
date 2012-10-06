@@ -12,9 +12,9 @@ class Cycle(models.Model):
 
 class Package(models.Model):
     name = models.CharField(max_length=255)
-    cycle = models.ForeignKey(Cycle)
-    pub_date = models.DateTimeField()
-    type = models.CharField(max_length=1, choices=(('基础', '基础'), ('大扩', '大扩'), ('小扩', '小扩')), )
+    cycle = models.ForeignKey(Cycle, null=True, blank=True)
+    pub_date = models.DateField()
+    type = models.CharField(max_length=10, choices=((u'基础', u'基础'), (u'大扩', u'大扩'), (u'小扩', u'小扩')), )
     
     def __unicode__(self):
         return self.name    
@@ -25,6 +25,7 @@ class Card(models.Model):
     package = models.ForeignKey(Package)
     cost = models.IntegerField()
     rules = models.TextField()
+    house = models.CharField(max_length=5)
     img_path = models.CharField(max_length=255)
     
     def __unicode__(self):

@@ -9,6 +9,15 @@ class PackageInline(admin.TabularInline):
 class CycleAdmin(admin.ModelAdmin):
     inlines = [PackageInline]
 
-admin.site.register(Package)
+    
+class CardInline(admin.TabularInline):
+    model = Card
+    extra = 2
+
+class PackageAdmin(admin.ModelAdmin):
+    inlines = [CardInline]
+
+    
 admin.site.register(Cycle, CycleAdmin)
+admin.site.register(Package, PackageAdmin)
 admin.site.register(Card)

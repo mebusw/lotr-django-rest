@@ -31,3 +31,7 @@ admin.site.register(Session)
 admin.site.register(Person)
 admin.site.register(Group)
 admin.site.register(Membership)
+
+admin.site.register(Blog)
+admin.site.register(Entry)
+admin.site.register(Author)

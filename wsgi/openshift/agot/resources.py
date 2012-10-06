@@ -4,35 +4,29 @@ from djangorestframework.resources import ModelResource
 from models import *  
 from djangorestframework.renderers import DocumentingPlainTextRenderer
 
-class ChoiceItemResource(ModelResource):  
-    model = Choice  
-    fields = ('poll', 'choice', 'vote')
-    #ordering = ('-created',)
-    
-    def poll(self, instance):
-        #return reverse('poll', kwargs={'question': instance.poll.question})
-        #return  instance.poll.question
-        return instance.poll
-
-class PollItemResource(ModelResource):  
-    model = Poll  
-    fields = ('question', 'choices', 'pub_date')
-    ordering = ('-pub_date',)
-    
-    def choices(self, instance):
-        return instance.choice_set    
-        #return reverse('index', args=[instance.id])
-
 class CycleItemResource(ModelResource):  
     model = Cycle  
-    fields = ('name', 'en_name', 'package')
+    fields = ('name', 'packages')
     
-    def package(self, instance):
+    def packages(self, instance):
         return instance.package_set
+        #return reverse('index', args=[instance.id])
 
 class PackageItemResource(ModelResource):  
     model = Package  
-    fields = ('name', 'en_name', 'type', 'cycle')
+    fields = ('name', 'type', 'cycle', 'pub_date', 'cards')
+    ordering = ('-pub_date',)
 
     def cycle(self, instance):
         return instance.cycle
+
+    def cards(self, instance):
+        return instance.card_set
+        
+class CardItemResource(ModelResource):  
+    model = Card  
+    fields = ('name', 'package', 'cost', 'rules', 'house')
+
+    def package(self, instance):
+        return instance.package
+        
