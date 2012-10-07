@@ -23,9 +23,14 @@ class Package(models.Model):
 class Card(models.Model):
     name = models.CharField(max_length=255)
     package = models.ForeignKey(Package)
+    type = models.CharField(max_length=10, choices=((u'附属牌', u'附属牌'), ))
     cost = models.IntegerField()
+    house = models.CharField(max_length=5, choices=((u'史塔克', u'史塔克'), (u'兰尼斯特', u'兰尼斯特'), ))
+    strength = models.IntegerField()
+    traits = models.CharField(max_length=5)
     rules = models.TextField()
-    house = models.CharField(max_length=5)
+    keywords = models.CharField(max_length=5)
+    crests = models.CharField(max_length=5)
     img_path = models.CharField(max_length=255)
     
     def __unicode__(self):

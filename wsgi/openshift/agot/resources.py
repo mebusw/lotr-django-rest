@@ -6,7 +6,7 @@ from djangorestframework.renderers import DocumentingPlainTextRenderer
 
 class CycleItemResource(ModelResource):  
     model = Cycle  
-    fields = ('name', 'packages')
+    fields = ('id', 'name', 'packages')
     
     def packages(self, instance):
         return instance.package_set
@@ -14,7 +14,7 @@ class CycleItemResource(ModelResource):
 
 class PackageItemResource(ModelResource):  
     model = Package  
-    fields = ('name', 'type', 'cycle', 'pub_date', 'cards')
+    fields = ('id', 'name', 'type', 'cycle', 'pub_date', 'cards')
     ordering = ('-pub_date',)
 
     def cycle(self, instance):
@@ -25,7 +25,7 @@ class PackageItemResource(ModelResource):
         
 class CardItemResource(ModelResource):  
     model = Card  
-    fields = ('name', 'package', 'cost', 'rules', 'house')
+    fields = ('id', 'name', 'package', 'cost', 'rules', 'house')
 
     def package(self, instance):
         return instance.package
