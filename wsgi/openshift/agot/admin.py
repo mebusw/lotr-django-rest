@@ -17,7 +17,9 @@ class CardInline(admin.TabularInline):
 class PackageAdmin(admin.ModelAdmin):
     inlines = [CardInline]
 
-    
+
+admin.site.register(Keyword)
+admin.site.register(Trait)    
 admin.site.register(Cycle, CycleAdmin)
 admin.site.register(Package, PackageAdmin)
 admin.site.register(Card)

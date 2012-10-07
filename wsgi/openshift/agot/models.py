@@ -4,6 +4,20 @@ import logging
 
 logger = logging.getLogger('myproject.custom')
 
+class Trait(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.name    
+    
+class Keyword(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.name    
+
+        
+        
 class Cycle(models.Model):
     name = models.CharField(max_length=255)
    
@@ -27,12 +41,13 @@ class Card(models.Model):
     cost = models.IntegerField()
     house = models.CharField(max_length=5, choices=((u'史塔克', u'史塔克'), (u'兰尼斯特', u'兰尼斯特'), ))
     strength = models.IntegerField()
-    traits = models.CharField(max_length=5)
+    traits = models.ManyToManyField(Trait)
     rules = models.TextField()
-    keywords = models.CharField(max_length=5)
-    crests = models.CharField(max_length=5)
+    keywords = models.ManyToManyField(Keyword)
+    crests = models.CharField(max_length=5, choices=((u'勇武', u'勇武'), (u'博学', u'博学'), ))
     img_path = models.CharField(max_length=255)
     
     def __unicode__(self):
         return self.name    
+    
     
