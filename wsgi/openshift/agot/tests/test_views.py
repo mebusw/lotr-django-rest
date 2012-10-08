@@ -15,4 +15,16 @@ from django.core.cache import cache
 import logging
 logger = logging.getLogger('myproject.custom')
 
+class PollsViewTest(TestCase):
+    fixtures = ['agot.json']
+
+    def test_index_page_with_caching(self):
+        response = self.client.get('/agot/package/')
+        #logger.info(response)
+        #logger.info(response.context)
+        logger.info(response.content)
+        #self.assertTemplateUsed(response, 'index.html')
+        #self.assertFalse(response.context['isFromCache'])
+
+        #self.assertTemplateUsed(response, 'index.html')
 

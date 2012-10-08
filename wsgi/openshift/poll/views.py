@@ -109,13 +109,13 @@ def userinfo(request):
 # Customerized REST view
 class RESTforPollAndChoice(View):  
     def get(self, request, *args, **kwargs):  
-        return 'get pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.GET)
+        return 'GET pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.GET)
     def delete(self, request, *args, **kwargs):  
-        return 'delete pid=%s cid=%s args=%s' % (kwargs['pid'], kwargs['cid'], args)
+        return 'DELETE pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.POST)
     def put(self, request, *args, **kwargs):  
-        return 'put pid=%s cid=%s args=%s' % (kwargs['pid'], kwargs['cid'], args)
+        return 'PUT pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.POST)
     def post(self, request, *args, **kwargs):  
-        return 'post pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.POST)
+        return 'POST pid=%s cid=%s args=%s req=%s' % (kwargs['pid'], kwargs['cid'], args, request.POST)
 
 class RESTforPoll(View):  
     def get(self, request, *args, **kwargs):
