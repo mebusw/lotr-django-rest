@@ -1,4 +1,4 @@
-from django.test import TestCase
+﻿from django.test import TestCase
 from django.utils import timezone
 from datetime import datetime, time, date, timedelta
 from poll.models import *
@@ -26,4 +26,18 @@ class CycleModelTest(TestCase):
         all_cycles = Cycle.objects.all()
         self.assertEqual('cycle1', unicode(all_cycles[0]))
 
+class CardModelTest(TestCase):
+    def setUp(self):
+        self.package = Package.objects.create(name='abc', cycle=None, pub_date=timezone.now(), type=u'基础')
+        self.house = House.objects.create(name='Stark')
+        self.card = Card.objects.create(name='sword', package=self.package, type=u'附属牌', cost=2)
+        self.card.house.add(self.house)
+        
+    def test_creating_and_saving(self):
+        all_cards= Card.objects.all()
+        self.assertEqual('sword', all_cards[0].name)
+        self.assertEqual(2, all_cards[0].cost)
+        self.assertEqual(0, all_cards[0].strength)
+        
+        self.assertIn(self.house, all_cards[0].house.all())
         

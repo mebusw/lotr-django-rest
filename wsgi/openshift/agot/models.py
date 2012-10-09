@@ -16,7 +16,23 @@ class Keyword(models.Model):
     def __unicode__(self):
         return self.name    
 
+class House(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.name    
+
+class Crest(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.name    
         
+class Type(models.Model):
+    name = models.CharField(max_length=255)
+    
+    def __unicode__(self):
+        return self.name    
         
 class Cycle(models.Model):
     name = models.CharField(max_length=255)
@@ -38,13 +54,13 @@ class Card(models.Model):
     name = models.CharField(max_length=255)
     package = models.ForeignKey(Package)
     type = models.CharField(max_length=10, choices=((u'附属牌', u'附属牌'), ))
-    cost = models.IntegerField()
-    house = models.CharField(max_length=5, choices=((u'史塔克', u'史塔克'), (u'兰尼斯特', u'兰尼斯特'), ))
-    strength = models.IntegerField()
+    cost = models.IntegerField(default=0)
+    house = models.ManyToManyField(House)
+    strength = models.IntegerField(default=0)
     traits = models.ManyToManyField(Trait)
     rules = models.TextField()
     keywords = models.ManyToManyField(Keyword)
-    crests = models.CharField(max_length=5, choices=((u'勇武', u'勇武'), (u'博学', u'博学'), ))
+    crests = models.ManyToManyField(Crest)
     img_path = models.CharField(max_length=255)
     
     def __unicode__(self):

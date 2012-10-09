@@ -15,16 +15,24 @@ from django.core.cache import cache
 import logging
 logger = logging.getLogger('myproject.custom')
 
-class PollsViewTest(TestCase):
-    fixtures = ['agot.json']
+class PackgeViewTest(TestCase):
+    ### fixtures = ['agot.json']
 
-    def test_index_page_with_caching(self):
+    def test_create_a_new_package_and_return_it(self):
+        pkg = Package(name='abc', cycle=None, pub_date=timezone.now(), type=u'基础')
+        pkg.save()
         response = self.client.get('/agot/package/')
-        #logger.info(response)
-        #logger.info(response.context)
+
         logger.info(response.content)
+        self.assertIn('"name": "abc"', response.content)
+        self.assertIn('"cycle": null', response.content)
+
         #self.assertTemplateUsed(response, 'index.html')
         #self.assertFalse(response.context['isFromCache'])
 
         #self.assertTemplateUsed(response, 'index.html')
 
+class CardViewTest(TestCase):
+    def test_(self):
+        pass
+        

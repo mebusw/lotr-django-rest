@@ -1,0 +1,131 @@
+[
+  {
+    "pk": 1,
+    "model": "agot.trait",
+    "fields": {
+      "name": "\u8d35\u65cf"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "agot.trait",
+    "fields": {
+      "name": "\u51b0\u539f\u72fc"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "agot.trait",
+    "fields": {
+      "name": "\u9a91\u58eb"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "agot.keyword",
+    "fields": {
+      "name": "\u540d\u671b"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "agot.keyword",
+    "fields": {
+      "name": "\u81f4\u547d"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "agot.keyword",
+    "fields": {
+      "name": "\u575a\u5f3a"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "agot.cycle",
+    "fields": {
+      "name": "\u65e7\u9547\u5b66\u57ce"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "agot.cycle",
+    "fields": {
+      "name": "\u65e7\u9547\u4e4b\u8c1c"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "agot.package",
+    "fields": {
+      "type": "\u57fa\u7840",
+      "pub_date": "2012-10-06",
+      "name": "\u51db\u51ac\u738b\u8005",
+      "cycle": null
+    }
+  },
+  {
+    "pk": 3,
+    "model": "agot.package",
+    "fields": {
+      "type": "\u5c0f\u6269",
+      "pub_date": "2012-10-06",
+      "name": "\u5b66\u57ce\u4e4b\u95e8",
+      "cycle": 2
+    }
+  },
+  {
+    "pk": 4,
+    "model": "agot.package",
+    "fields": {
+      "type": "\u5927\u6269",
+      "pub_date": "2012-10-06",
+      "name": "\u5b66\u58eb\u7684\u9501\u94fe",
+      "cycle": 2
+    }
+  },
+  {
+    "pk": 5,
+    "model": "agot.package",
+    "fields": {
+      "type": "\u5927\u6269",
+      "pub_date": "2012-10-06",
+      "name": "\u67a2\u673a\u4f1a\u4e4b\u53ec",
+      "cycle": 2
+    }
+  },
+  {
+    "pk": 6,
+    "model": "agot.package",
+    "fields": {
+      "type": "\u57fa\u7840",
+      "pub_date": "2012-10-06",
+      "name": "\u57fa\u7840\u7248",
+      "cycle": null
+    }
+  },
+  {
+    "pk": 1,
+    "model": "agot.card",
+    "fields": {
+      "strength": 3,
+      "name": "\u827e\u5fb7\u53f2\u5854\u514b",
+      "package": 6,
+      "rules": "\u83b7\u5f97\u6743\u529b\u6807\u8bb0",
+      "house": "\u53f2\u5854\u514b",
+      "traits": [
+        1
+      ],
+      "cost": 4,
+      "keywords": [
+        4,
+        5,
+        6
+      ],
+      "type": "\u9644\u5c5e\u724c",
+      "crests": "\u52c7\u6b66",
+      "img_path": "file://"
+    }
+  }
+]
