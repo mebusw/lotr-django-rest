@@ -23,7 +23,8 @@ class PackgeViewTest(TestCase):
         pkg.save()
         response = self.client.get('/agot/package/')
 
-        logger.info(response.content)
+        #logger.info(dir(response))
+        self.assertEqual(200, response.status_code)
         self.assertIn('"name": "abc"', response.content)
         self.assertIn('"cycle": null', response.content)
 
